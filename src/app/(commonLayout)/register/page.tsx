@@ -1,7 +1,7 @@
-export default function RegisterPager() {
-  return (
-    <div>
-      <h1> This is page component </h1>
-    </div>
-  );
-}
+"use client";
+import { FormEvent, useState } from "react";
+import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
+import { AuthShell, Field } from "../login/page";
+
+export default function RegisterPage() { const [message, setMessage] = useState(""); const [pending, setPending] = useState(false); async function submit(e: FormEvent<HTMLFormElement>) { e.preventDefault(); setPending(true); setMessage(""); const data = new FormData(e.currentTarget); const password = String(data.get("password")); if (password.length < 8) { setMessage("Use at least 8 characters for your password."); setPending(false); return; } const result = await authClient.signUp.email({ name: String(data.get("name")), email: String(data.get("email")), password, callbackURL: "/dashboard" }); setMessage(result.error ? result.error.message || "Unable to create your account." : "Account created. Check your inbox to verify your email."); setPending(false); } return <AuthShell title="Start writing" copy="Create your account and publish ideas that matter."><form onSubmit={submit} className="space-y-4"><Field label="Name" name="name" autoComplete="name" /><Field label="Email" name="email" type="email" autoComplete="email" /><Field label="Password" name="password" type="password" autoComplete="new-password" />{message && <p className="rounded-xl bg-secondary p-3 text-sm">{message}</p>}<button disabled={pending} className="w-full rounded-xl bg-foreground py-3 font-bold text-background disabled:opacity-50">{pending ? "Creating account…" : "Create account"}</button></form><p className="mt-6 text-center text-sm text-muted-foreground">Already have an account? <Link className="font-bold text-foreground" href="/login">Sign in</Link></p></AuthShell>; }

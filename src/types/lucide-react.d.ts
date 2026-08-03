@@ -1,0 +1,32 @@
+declare module "lucide-react" {
+  import type { ComponentType, SVGProps } from "react";
+  export type LucideIcon = ComponentType<SVGProps<SVGSVGElement> & { size?: number | string; strokeWidth?: number | string }>;
+  export const ArrowLeft: LucideIcon;
+  export const ArrowRight: LucideIcon;
+  export const ArrowUpRight: LucideIcon;
+  export const BookOpen: LucideIcon;
+  export const Check: LucideIcon;
+  export const ChevronDown: LucideIcon;
+  export const ChevronRight: LucideIcon;
+  export const ChevronsUpDown: LucideIcon;
+  export const ChevronUp: LucideIcon;
+  export const Chrome: LucideIcon;
+  export const CircleIcon: LucideIcon;
+  export const Clock3: LucideIcon;
+  export const Eye: LucideIcon;
+  export const GalleryVerticalEnd: LucideIcon;
+  export const CheckIcon: LucideIcon;
+  export const ChevronDownIcon: LucideIcon;
+  export const ChevronRightIcon: LucideIcon;
+  export const XIcon: LucideIcon;
+  export const Menu: LucideIcon;
+  export const MessageCircle: LucideIcon;
+  export const Moon: LucideIcon;
+  export const MoreHorizontal: LucideIcon;
+  export const PanelLeftIcon: LucideIcon;
+  export const PenLine: LucideIcon;
+  export const Search: LucideIcon;
+  export const Sparkles: LucideIcon;
+  export const Sun: LucideIcon;
+  export const X: LucideIcon;
+}

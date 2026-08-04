@@ -12,7 +12,7 @@ export default function AboutError({
   useEffect(() => {
     //* We can pass this error to a logger
     console.error(error);
-  }, []);
+  }, [error]);
 
   return (
     <div>

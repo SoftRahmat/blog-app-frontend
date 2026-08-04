@@ -1,233 +1,146 @@
-# Blog App (Frontend)
+# Inkline Blog Frontend
 
-A modern, accessible blog frontend built with **Next.js**, **React**, **TypeScript**, and **Tailwind CSS**.  
-This client focuses on clean UI composition, accessibility, and long-term maintainability.
+Production-ready frontend for Inkline, a publishing community backed by the Inkline Express/Prisma API.
 
----
+## Stack
 
-## 🌐 Overview
+- Next.js 16 App Router
+- React 19 and TypeScript
+- Tailwind CSS 4
+- Better Auth React client
+- Radix UI primitives
+- Lucide icons
+- `next-themes` light, dark, and system themes
 
-- **Framework:** Next.js 16.1.1  
-- **UI Library:** React 19.2.3  
-- **Styling:** Tailwind CSS 4  
-- **Language:** TypeScript  
-- **Component System:** Radix UI  
-- **Icons:** Lucide React  
-- **Theming:** Light / Dark mode via `next-themes`  
-- **Linting:** ESLint with Next.js configuration  
+The frontend runs at `http://localhost:4000`; the backend runs at `http://localhost:3000` by default.
 
-This repository is private and intended for controlled or internal use.
+## Current functionality
 
----
+### Public experience
 
-## 🛠️ Technology Stack
+- Responsive home and About pages
+- Published-story archive
+- Search by text and tags
+- Featured filtering and newest/oldest/popular/title sorting
+- Pagination
+- Article detail pages with view and comment counts
+- Responsive navigation, theme switching, loading/error/not-found states
 
-### Frontend
-- Next.js
-- React
-- TypeScript
-- Tailwind CSS
-- Radix UI
-- Lucide React
+### Authentication
 
-### Utilities
-- clsx
-- tailwind-merge
-- class-variance-authority
-- tw-animate-css
+- Email/password registration and login
+- Google sign-in
+- Email verification and verification resend
+- Forgot-password and reset-password flows
+- Session-aware navigation and calls to action
+- Protected writer/admin dashboard layout
 
-### Tooling
-- ESLint
-- PostCSS
-- Type definitions for Node and React
+### Writer workspace
 
----
+- Create stories
+- Save drafts or publish immediately
+- Edit, archive, and delete owned stories
+- Configure thumbnail URLs and tags
+- Review story, view, and comment totals
+- Comment, reply, edit owned comments, and delete owned comments
 
-## 📁 Project Structure
+### Admin workspace
 
-```
-next-blog-client/
-├─ src/
-│  ├─ app/
-│  │  ├─ (commonLayout)/
-│  │  │  ├─ about/
-│  │  │  │  ├─ error.tsx
-│  │  │  │  ├─ loading.tsx
-│  │  │  │  └─ page.tsx
-│  │  │  ├─ blogs/
-│  │  │  │  └─ page.tsx
-│  │  │  ├─ contact/
-│  │  │  │  ├─ branch/
-│  │  │  │  │  └─ page.tsx
-│  │  │  │  ├─ layout.tsx
-│  │  │  │  └─ page.tsx
-│  │  │  ├─ login/
-│  │  │  │  └─ page.tsx
-│  │  │  ├─ register/
-│  │  │  │  └─ page.tsx
-│  │  │  ├─ layout.tsx
-│  │  │  └─ page.tsx
-│  │  ├─ (dashboardLayout)/
-│  │  │  ├─ @admin/
-│  │  │  │  ├─ admin-dashboard/
-│  │  │  │  │  └─ page.tsx
-│  │  │  │  └─ default.tsx
-│  │  │  ├─ @user/
-│  │  │  │  ├─ dashboard/
-│  │  │  │  │  └─ page.tsx
-│  │  │  │  └─ default.tsx
-│  │  │  └─ layout.tsx
-│  │  ├─ (practice)/
-│  │  │  ├─ @marketingSlot/
-│  │  │  │  ├─ marketing/
-│  │  │  │  │  ├─ settings/
-│  │  │  │  │  │  └─ page.tsx
-│  │  │  │  │  └─ page.tsx
-│  │  │  │  └─ default.tsx
-│  │  │  ├─ @salesSlot/
-│  │  │  │  ├─ sales/
-│  │  │  │  │  └─ page.tsx
-│  │  │  │  └─ default.tsx
-│  │  │  ├─ development/
-│  │  │  │  └─ page.tsx
-│  │  │  ├─ testing/
-│  │  │  │  └─ page.tsx
-│  │  │  ├─ default.tsx
-│  │  │  └─ layout.tsx
-│  │  ├─ favicon.ico
-│  │  ├─ globals.css
-│  │  ├─ layout.tsx
-│  │  └─ not-found.tsx
-│  ├─ components/
-│  │  ├─ layout/
-│  │  │  ├─ app-sidebar.tsx
-│  │  │  ├─ ModeToggle.tsx
-│  │  │  ├─ Navbar.tsx
-│  │  │  ├─ search-form.tsx
-│  │  │  └─ version-switcher.tsx
-│  │  └─ ui/
-│  │     ├─ accordion.tsx
-│  │     ├─ breadcrumb.tsx
-│  │     ├─ button.tsx
-│  │     ├─ dropdown-menu.tsx
-│  │     ├─ input.tsx
-│  │     ├─ label.tsx
-│  │     ├─ navigation-menu.tsx
-│  │     ├─ separator.tsx
-│  │     ├─ sheet.tsx
-│  │     ├─ sidebar.tsx
-│  │     ├─ skeleton.tsx
-│  │     └─ tooltip.tsx
-│  ├─ hooks/
-│  │  └─ use-mobile.ts
-│  ├─ lib/
-│  │  └─ utils.ts
-│  ├─ providers/
-│  │  └─ ThemeProvider.tsx
-│  ├─ routes/
-│  │  ├─ adminRoutes.ts
-│  │  └─ userRoutes.ts
-│  └─ types/
-│     ├─ index.ts
-│     └─ routes.type.ts
-├─ .gitignore
-├─ components.json
-├─ eslint.config.mjs
-├─ next-env.d.ts
-├─ next.config.ts
-├─ package-lock.json
-├─ package.json
-├─ pnpm-lock.yaml
-├─ pnpm-workspace.yaml
-├─ postcss.config.mjs
-├─ README.md
-└─ tsconfig.json
+- Platform statistics
+- Manage every post's status and featured state
+- Delete posts
+- Approve or reject comments
+- Search users by name or email
+- Change user/admin roles
+- Suspend and reactivate accounts
+- Review verification state and post/comment activity counts
 
+Suspended accounts have their backend sessions revoked and cannot access protected functionality.
+
+## Project structure
+
+```text
+src/
+  app/
+    (commonLayout)/       Public pages and authentication flows
+    (dashboardLayout)/    Writer and admin dashboards
+  components/             Blog, comments, admin, layout, and UI components
+  lib/
+    auth-client.ts        Better Auth browser client
+    blog-api.ts           Typed API models and fetch helper
+  providers/              Theme provider
 ```
 
----
+## Environment configuration
 
-## 🚀 Setup & Installation
+Copy `.env.example` to `.env.local`:
 
-### Clone
-
-```
-git clone <repository-url>
-cd blog-site-client
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3000
 ```
 
-### Install
+Do not add a trailing slash. The backend must set `APP_URL=http://localhost:4000` so cookie requests and CORS work correctly.
 
-```
-pnpm or npm install
-```
+## Local setup
 
----
+1. Start the backend and PostgreSQL first.
 
-## ▶️ Development
+2. Install dependencies:
 
-```
-npm run dev
-```
+   ```bash
+   npm install
+   ```
 
-http://localhost:3000
+3. Create `.env.local` as shown above.
 
----
+4. Start the frontend:
 
-## 📦 Production
+   ```bash
+   npm run dev
+   ```
 
-```
+5. Open [http://localhost:4000](http://localhost:4000).
+
+## Scripts
+
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Run the Next.js development server on port 4000 |
+| `npm run lint` | Run ESLint |
+| `npm run build` | Create an optimized production build |
+| `npm start` | Serve the production build on port 4000 |
+
+## Main routes
+
+| Route | Access | Purpose |
+| --- | --- | --- |
+| `/` | Public | Landing page and recent stories |
+| `/about` | Public | Inkline mission and platform overview |
+| `/blogs` | Public | Searchable/filterable story archive |
+| `/blogs/[id]` | Public | Article and comments |
+| `/register` | Guest | Create an account |
+| `/login` | Guest | Sign in |
+| `/verify-email` | Public | Complete email verification |
+| `/forgot-password` | Guest | Request a reset email |
+| `/reset-password` | Public | Choose a new password |
+| `/dashboard` | Authenticated | Writer workspace |
+| `/admin-dashboard` | Admin | Posts, comments, stats, and user management |
+
+The About page's “Start writing” button sends signed-in users to `/dashboard` and guests to `/register`.
+
+## API integration
+
+`src/lib/blog-api.ts` centralizes the backend base URL, shared types, and authenticated fetch behavior. Requests use cookies with `credentials: "include"`.
+
+Public pages use server-side fetching where appropriate. Session-dependent client UI is hydration-safe so the server and first browser render remain consistent.
+
+## Production validation
+
+Run both checks before committing or deploying:
+
+```bash
+npm run lint
 npm run build
-npm run start
 ```
 
----
-
-## 📜 Scripts
-
-- dev
-- build
-- start
-- lint
-
----
-
-## 🎨 Styling
-
-- Tailwind CSS as primary styling system
-- CVA for variants
-- tailwind-merge for class safety
-- tw-animate-css for animations
-
----
-
-## 🌗 Theming
-
-- Light / Dark / System themes
-- next-themes handles persistence
-- SSR-safe
-
----
-
-## 🔐 Environment Variables
-
-`.env.local`
-
-```
-NEXT_PUBLIC_API_URL=https://api.example.com
-NEXT_PUBLIC_APP_NAME=Blog Site
-```
-
----
-
-## 🚢 Deployment
-
-Recommended: Vercel
-
-Steps:
-1. Push to GitHub
-2. Import to Vercel
-3. Set env vars
-4. Deploy
-
----
+For production, configure `NEXT_PUBLIC_API_URL` with the public HTTPS API origin. Configure the backend's `APP_URL`, Better Auth URL, trusted origin, cookie settings, and Google OAuth redirect URLs for the deployed frontend domain.

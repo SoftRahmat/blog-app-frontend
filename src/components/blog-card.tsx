@@ -1,5 +1,6 @@
 import { ArrowUpRight, Clock3, MessageCircle } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { BlogPost, excerpt, formatDate } from "@/lib/blog-api";
 
 export function BlogCard({
@@ -17,10 +18,13 @@ export function BlogCard({
         className={`relative overflow-hidden bg-muted ${featured ? "min-h-72" : "aspect-[16/10]"}`}
       >
         {post.thumbnail ? (
-          <img
+          <Image
             src={post.thumbnail}
             alt=""
-            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+            fill
+            unoptimized
+            sizes={featured ? "(min-width: 768px) 50vw, 100vw" : "(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"}
+            className="object-cover transition duration-500 group-hover:scale-105"
           />
         ) : (
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_25%,#f59e0b55,transparent_36%),radial-gradient(circle_at_75%_65%,#14b8a655,transparent_40%),linear-gradient(135deg,#172554,#0f172a)]" />

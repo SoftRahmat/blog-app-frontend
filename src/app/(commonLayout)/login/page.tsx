@@ -15,7 +15,7 @@ export default function LoginPage() {
     const result = await authClient.signIn.email({
       email: String(data.get("email")),
       password: String(data.get("password")),
-      callbackURL: `${window.location.origin}/dashboard`,
+      callbackURL: `${window.location.origin}${new URLSearchParams(window.location.search).get("callbackURL") || "/dashboard"}`,
     });
     if (result.error) setError(result.error.message || "Unable to sign in.");
     setPending(false);
@@ -33,6 +33,14 @@ export default function LoginPage() {
           type="password"
           autoComplete="current-password"
         />
+        <div className="text-right">
+          <Link
+            href="/forgot-password"
+            className="text-sm font-semibold text-teal-700"
+          >
+            Forgot password?
+          </Link>
+        </div>
         {error && (
           <p className="rounded-xl bg-red-500/10 p-3 text-sm text-red-600">
             {error}

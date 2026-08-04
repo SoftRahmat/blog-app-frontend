@@ -1,8 +1,9 @@
 import { ArrowLeft, Eye, MessageCircle } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { API_URL, BlogPost, formatDate } from "@/lib/blog-api";
-import { CommentForm } from "@/components/comment-form";
+import { CommentsSection } from "@/components/comments-section";
 
 export default async function ArticlePage({
   params,
@@ -55,35 +56,20 @@ export default async function ArticlePage({
       </header>
       {post.thumbnail && (
         <div className="mx-auto mt-10 max-w-5xl px-5">
-          <img
+          <Image
             src={post.thumbnail}
             alt=""
-            className="max-h-[560px] w-full rounded-3xl object-cover"
+            width={1280}
+            height={720}
+            unoptimized
+            className="max-h-140 w-full rounded-3xl object-cover"
           />
         </div>
       )}
       <div className="prose-copy mx-auto max-w-3xl whitespace-pre-wrap px-5 py-14 text-lg leading-8">
         {post.content}
       </div>
-      <section className="mx-auto max-w-3xl border-t px-5 py-14">
-        <h2 className="text-2xl font-bold">Join the conversation</h2>
-        <CommentForm postId={post.id} />
-        <div className="mt-10 space-y-6">
-          {post.comments?.map((comment) => (
-            <div key={comment.id} className="rounded-2xl bg-secondary/50 p-5">
-              <p className="leading-7">{comment.content}</p>
-              <p className="mt-3 text-xs text-muted-foreground">
-                {formatDate(comment.createdAt)}
-              </p>
-              {comment.replies?.map((reply) => (
-                <div key={reply.id} className="ml-5 mt-4 border-l-2 pl-4">
-                  <p>{reply.content}</p>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </section>
+      <CommentsSection postId={post.id} comments={post.comments ?? []} />
     </article>
   );
 }

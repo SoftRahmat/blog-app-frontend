@@ -13,6 +13,7 @@ export interface Comment {
   createdAt: string;
   updatedAt: string;
   replies?: Comment[];
+  post?: { id: string; title: string };
 }
 export interface BlogPost {
   id: string;

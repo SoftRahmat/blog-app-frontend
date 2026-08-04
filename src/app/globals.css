@@ -124,7 +124,33 @@
   }
 }
 
-html { scroll-behavior: smooth; }
-.hero-grid { background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px); background-size: 42px 42px; mask-image: linear-gradient(to right, black, transparent); }
-.prose-copy { font-family: Georgia, "Times New Roman", serif; }
-::selection { background: #fde68a; color: #172554; }
+html {
+  scroll-behavior: smooth;
+}
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to right, black, transparent);
+}
+.prose-copy {
+  font-family: Georgia, "Times New Roman", serif;
+}
+::selection {
+  background: #fde68a;
+  color: #172554;
+}
+.field {
+  width: 100%;
+  min-height: 3rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  background: var(--background);
+  padding-inline: 1rem;
+  font-weight: 400;
+  outline: none;
+}
+.field:focus {
+  box-shadow: 0 0 0 2px #14b8a6;
+}

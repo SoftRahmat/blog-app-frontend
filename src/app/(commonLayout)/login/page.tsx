@@ -15,7 +15,7 @@ export default function LoginPage() {
     const result = await authClient.signIn.email({
       email: String(data.get("email")),
       password: String(data.get("password")),
-      callbackURL: "/dashboard",
+      callbackURL: `${window.location.origin}/dashboard`,
     });
     if (result.error) setError(result.error.message || "Unable to sign in.");
     setPending(false);
@@ -51,7 +51,7 @@ export default function LoginPage() {
         onClick={() =>
           authClient.signIn.social({
             provider: "google",
-            callbackURL: "/dashboard",
+            callbackURL: `${window.location.origin}/dashboard`,
           })
         }
         className="flex w-full items-center justify-center gap-2 rounded-xl border py-3 font-semibold"

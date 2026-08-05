@@ -2,6 +2,7 @@
 
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import { ActionDialog } from "@/components/action-dialog";
 import { apiFetch, BlogPost, formatDate, PostStatus } from "@/lib/blog-api";
 
 type FormState = {
@@ -26,6 +27,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const [deleteTarget, setDeleteTarget] = useState<BlogPost | null>(null);
 
   const loadPosts = useCallback(async () => {
     setLoading(true);
@@ -95,17 +97,17 @@ export default function DashboardPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  async function remove(post: BlogPost) {
-    if (!window.confirm(`Delete “${post.title}”? This cannot be undone.`))
-      return;
+  async function remove() {
+    if (!deleteTarget) return;
     try {
-      await apiFetch(`/posts/${post.id}`, { method: "DELETE" });
+      await apiFetch(`/posts/${deleteTarget.id}`, { method: "DELETE" });
       setMessage("Story deleted.");
       await loadPosts();
     } catch (error) {
       setMessage(
         error instanceof Error ? error.message : "Unable to delete this story.",
       );
+      throw error;
     }
   }
 
@@ -280,7 +282,7 @@ export default function DashboardPage() {
                       Edit
                     </button>
                     <button
-                      onClick={() => remove(post)}
+                      onClick={() => setDeleteTarget(post)}
                       className="rounded-full border border-red-300 px-4 py-2 text-sm font-semibold text-red-600"
                     >
                       Delete
@@ -292,6 +294,19 @@ export default function DashboardPage() {
           </div>
         )}
       </section>
+      <ActionDialog
+        open={Boolean(deleteTarget)}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+        title="Delete story?"
+        description={
+          deleteTarget
+            ? `“${deleteTarget.title}” and its comments will be permanently deleted.`
+            : "This story and its comments will be permanently deleted."
+        }
+        confirmLabel="Delete"
+        tone="danger"
+        onConfirm={remove}
+      />
     </div>
   );
 }

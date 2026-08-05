@@ -4,6 +4,7 @@ import { FormEvent, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { apiFetch, Comment, formatDate } from "@/lib/blog-api";
+import { ActionDialog } from "@/components/action-dialog";
 
 const subscribeToHydration = () => () => {};
 
@@ -26,6 +27,8 @@ export function CommentsSection({
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState("");
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
+  const [editingTarget, setEditingTarget] = useState<Comment | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Comment | null>(null);
 
   async function create(event: FormEvent<HTMLFormElement>, parentId?: string) {
     event.preventDefault();
@@ -54,13 +57,10 @@ export function CommentsSection({
       setPending(false);
     }
   }
-  async function edit(comment: Comment) {
-    const content = window
-      .prompt("Update your comment", comment.content)
-      ?.trim();
-    if (!content || content === comment.content) return;
+  async function edit(content?: string) {
+    if (!editingTarget || !content || content === editingTarget.content) return;
     try {
-      await apiFetch(`/comments/${comment.id}`, {
+      await apiFetch(`/comments/${editingTarget.id}`, {
         method: "PATCH",
         body: JSON.stringify({ content }),
       });
@@ -70,18 +70,20 @@ export function CommentsSection({
       setMessage(
         error instanceof Error ? error.message : "Unable to update comment.",
       );
+      throw error;
     }
   }
-  async function remove(comment: Comment) {
-    if (!window.confirm("Delete this comment and its replies?")) return;
+  async function remove() {
+    if (!deleteTarget) return;
     try {
-      await apiFetch(`/comments/${comment.id}`, { method: "DELETE" });
+      await apiFetch(`/comments/${deleteTarget.id}`, { method: "DELETE" });
       setMessage("Comment deleted.");
       router.refresh();
     } catch (error) {
       setMessage(
         error instanceof Error ? error.message : "Unable to delete comment.",
       );
+      throw error;
     }
   }
 
@@ -117,13 +119,13 @@ export function CommentsSection({
           {owned && (
             <>
               <button
-                onClick={() => edit(comment)}
+                onClick={() => setEditingTarget(comment)}
                 className="font-bold text-foreground"
               >
                 Edit
               </button>
               <button
-                onClick={() => remove(comment)}
+                onClick={() => setDeleteTarget(comment)}
                 className="font-bold text-red-600"
               >
                 Delete
@@ -199,6 +201,26 @@ export function CommentsSection({
           </p>
         )}
       </div>
+      <ActionDialog
+        key={editingTarget?.id ?? "edit-comment"}
+        open={Boolean(editingTarget)}
+        onOpenChange={(open) => !open && setEditingTarget(null)}
+        title="Edit comment"
+        description="Update your response below."
+        inputLabel="Comment"
+        initialValue={editingTarget?.content}
+        confirmLabel="Save"
+        onConfirm={edit}
+      />
+      <ActionDialog
+        open={Boolean(deleteTarget)}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+        title="Delete comment?"
+        description="This comment and its replies will be permanently deleted."
+        confirmLabel="Delete"
+        tone="danger"
+        onConfirm={remove}
+      />
     </section>
   );
 }

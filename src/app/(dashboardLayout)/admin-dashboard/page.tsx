@@ -12,6 +12,7 @@ import {
 } from "@/lib/blog-api";
 import { AdminComments } from "@/components/admin-comments";
 import { AdminUsers } from "@/components/admin-users";
+import { ActionDialog } from "@/components/action-dialog";
 
 interface Stats {
   totalPosts: number;
@@ -33,6 +34,7 @@ export default function AdminDashboardPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [deleteTarget, setDeleteTarget] = useState<BlogPost | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -74,16 +76,17 @@ export default function AdminDashboardPage() {
       );
     }
   }
-  async function remove(post: BlogPost) {
-    if (!window.confirm(`Permanently delete “${post.title}”?`)) return;
+  async function remove() {
+    if (!deleteTarget) return;
     try {
-      await apiFetch(`/posts/${post.id}`, { method: "DELETE" });
+      await apiFetch(`/posts/${deleteTarget.id}`, { method: "DELETE" });
       setMessage("Post deleted.");
       await load();
     } catch (error) {
       setMessage(
         error instanceof Error ? error.message : "Unable to delete post.",
       );
+      throw error;
     }
   }
 
@@ -215,7 +218,7 @@ export default function AdminDashboardPage() {
                         View
                       </Link>
                       <button
-                        onClick={() => remove(post)}
+                        onClick={() => setDeleteTarget(post)}
                         className="rounded-full border border-red-300 px-4 py-2 text-sm font-semibold text-red-600"
                       >
                         Delete
@@ -235,6 +238,19 @@ export default function AdminDashboardPage() {
       )}
       <AdminUsers currentUserId={user.id} />
       <AdminComments />
+      <ActionDialog
+        open={Boolean(deleteTarget)}
+        onOpenChange={(open) => !open && setDeleteTarget(null)}
+        title="Delete post?"
+        description={
+          deleteTarget
+            ? `“${deleteTarget.title}” will be permanently deleted.`
+            : "This post will be permanently deleted."
+        }
+        confirmLabel="Delete"
+        tone="danger"
+        onConfirm={remove}
+      />
     </div>
   );
 }
